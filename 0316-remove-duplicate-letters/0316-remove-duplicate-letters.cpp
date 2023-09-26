@@ -1,31 +1,30 @@
 class Solution {
 public:
     string removeDuplicateLetters(string s) {
-        vector<int> lastIndex(26, 0);
-        for (int i = 0; i < s.length(); i++){
-            lastIndex[s[i] - 'a'] = i; 
-        }
-        
-        vector<bool> seen(26, false);
-        stack<char> st;
-        
-        for (int i = 0; i < s.size(); i++) {
-            int curr = s[i] - 'a';
-            if (seen[curr]) continue; 
-            while(st.size() > 0 && st.top() > s[i] && i < lastIndex[st.top() - 'a']){
-                seen[st.top() - 'a'] = false; 
-                st.pop();
+        unordered_map<char,int>mp;
+        for(int i = 0;i<s.length();i++)
+            mp[s[i]] = i;
+        stack<char>st;
+        vector<int>marked(26,0);
+        for(int i = 0;i<s.length();i++){
+            if(st.empty()){
+                st.push(s[i]);
+                marked[s[i]-'a'] = 1;
             }
-            st.push(s[i]); 
-            seen[curr] = true; 
+            else if(marked[s[i]- 'a'] == 0){
+                while(!st.empty() && (st.top() > s[i] && mp[st.top()] > i)){
+                    marked[st.top() - 'a'] = 0;
+                    st.pop();
+                }
+                st.push(s[i]);
+                marked[s[i] - 'a'] = 1;
+            }
         }
-        
-        string ans = "";
-        while (st.size() > 0){
-            ans += st.top();
+        string res = "";
+        while(!st.empty()){
+            res = st.top()+res;
             st.pop();
         }
-        reverse(ans.begin(), ans.end());
-        return ans;
+        return res;
     }
 };
