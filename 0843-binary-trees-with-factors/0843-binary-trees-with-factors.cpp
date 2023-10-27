@@ -15,9 +15,7 @@ public:
             for(int j = i-1;j>= 0;j--){
                 int a = arr[j],b = val/a;
                 if(mp.find(b) == mp.end() || val%a > 0 || b > a)continue;
-                // cout<<a<<" "<<b<<" "<<val<<endl;
-                // cout<<"mp of b is "<<mp[b]<<endl;
-                // cout<<"dp is "<<dp[j]<<" "<<dp[mp[b]]<<endl;
+        
                 if(a == b)
                     dp[i] += (dp[j]*1LL*dp[mp[b]])%mod;
                 else
@@ -25,7 +23,6 @@ public:
             }
         }
         for(int i = 0;i<n;i++){
-            // cout<<arr[i] <<" "<<dp[i]<<endl;
             res = (res*1LL + dp[i]*1LL)%mod;
         }
         return res;
